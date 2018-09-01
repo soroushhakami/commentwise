@@ -1,0 +1,44 @@
+<!doctype html>
+<html lang=en>
+<head>
+<script>
+  const apiKey = 'cca181eecdc8297082eb12a55d9b1d60'
+  const token = '09a32b0ef8004bd380a6c97162386d7a5f217cdbc0cd090a78c4850575a05e9f'
+  const auth = `?key=${apiKey}&token=${token}`
+
+  const fetchCards = async () => fetch(`https://api.trello.com/1/boards/qKhva9eu/cards${auth}`)
+  const fetchComments = async id => fetch(`https://api.trello.com/1/cards/${id}/actions${auth}`)
+
+  const load = async () => {
+    const cardsResponse = await fetchCards()
+    const cards = await cardsResponse.json()
+
+    const cardsWithComments = cards.filter(card => card.badges.comments > 0)
+    const randomCard = cardsWithComments[Math.floor(Math.random() * cardsWithComments.length)] 
+
+    const commentsResponse = await fetchComments(randomCard.id)
+    const comments = await commentsResponse.json()
+    const randomComment = comments[Math.floor(Math.random() * comments.length)]
+
+    const quote = document.getElementById('quote')
+    quote.textContent = `"${randomComment.data.text}"`
+    const book = document.getElementById('book')
+    book.textContent = `${randomComment.data.card.name}`
+  }
+
+  load()
+
+  
+</script>
+<meta charset=utf-8>
+<title>Commentwise</title>
+</head>
+<body>
+<h3 id="book"></h3>
+<p id="quote"></p>
+<button id="nextQuote">Next</button>
+<script>
+  document.getElementById('nextQuote').addEventListener('click', load)
+</script>
+</body>
+</html>
