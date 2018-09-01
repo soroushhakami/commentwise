@@ -20,16 +20,15 @@
   }
   #book {
     font-weight: bold;
-    margin-bottom: 10px;
   }
 </style>
 <script>
   const apiKey = 'cca181eecdc8297082eb12a55d9b1d60'
   const token = '09a32b0ef8004bd380a6c97162386d7a5f217cdbc0cd090a78c4850575a05e9f'
-  const auth = `?key=${apiKey}&token=${token}`
+  const auth = `key=${apiKey}&token=${token}`
 
-  const fetchCards = async () => fetch(`https://api.trello.com/1/boards/qKhva9eu/cards${auth}`)
-  const fetchComments = async id => fetch(`https://api.trello.com/1/cards/${id}/actions${auth}`)
+  const fetchCards = async () => fetch(`https://api.trello.com/1/boards/qKhva9eu/cards?${auth}`)
+  const fetchComments = async id => fetch(`https://api.trello.com/1/cards/${id}/actions?filter=commentCard&${auth}`)
 
   const load = async () => {
     const cardsResponse = await fetchCards()
@@ -43,7 +42,7 @@
     const randomComment = comments[Math.floor(Math.random() * comments.length)]
 
     const quote = document.getElementById('quote')
-    quote.textContent = `"${randomComment.data.text}"`
+    quote.textContent = `${randomComment.data.text}`
     const book = document.getElementById('book')
     book.textContent = `${randomComment.data.card.name}`
   }
