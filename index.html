@@ -1,6 +1,17 @@
 <!doctype html>
 <html lang=en>
 <head>
+<style type="text/css">
+  button {
+    width: 100%;
+    background-color: beige;
+    height: 60px;
+    position: fixed;
+    bottom: 0px;
+    right: 0px;
+    font-size: 30px;
+  }
+</style>
 <script>
   const apiKey = 'cca181eecdc8297082eb12a55d9b1d60'
   const token = '09a32b0ef8004bd380a6c97162386d7a5f217cdbc0cd090a78c4850575a05e9f'
@@ -31,12 +42,13 @@
   
 </script>
 <meta charset=utf-8>
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Commentwise</title>
 </head>
 <body>
 <h3 id="book"></h3>
 <p id="quote"></p>
-<button id="nextQuote">Next</button>
+<button id="nextQuote">📖👉</button>
 <script>
   document.getElementById('nextQuote').addEventListener('click', load)
 </script>
