@@ -11,7 +11,7 @@
   }
   button {
     width: 100%;
-    background-color: beige;
+    background-color: #e8e8e8;
     height: 60px;
     position: fixed;
     bottom: 0px;
@@ -21,6 +21,12 @@
   }
   .book {
     font-weight: bold;
+  }
+  a {
+    display: block;
+    color: black;
+    cursor: pointer;
+    text-decoration: none;
   }
 </style>
 <script>
@@ -52,6 +58,7 @@
     quote.textContent = `${randomComment.data.text}`
     const book = document.getElementById(`book${number}`)
     book.textContent = `${randomComment.data.card.name}`
+    book.href = randomCard.shortUrl
   }
 
   const init = async () => {
@@ -72,19 +79,19 @@
 <title>Commentwise</title>
 </head>
 <body>
-<div class="book" id="book1"></div>
+<a class="book" id="book1" target="_blank"></a>
 <div class="quote" id="quote1"></div>
 <hr>
-<div class="book" id="book2"></div>
+<a class="book" id="book2" target="_blank"></a>
 <div class="quote" id="quote2"></div>
 <hr>
-<div class="book" id="book3"></div>
+<a class="book" id="book3" target="_blank"></a>
 <div class="quote" id="quote3"></div>
 <hr>
-<div class="book" id="book4"></div>
+<a class="book" id="book4" target="_blank"></a>
 <div class="quote" id="quote4"></div>
 <hr>
-<div class="book" id="book5"></div>
+<a class="book" id="book5" target="_blank"></a>
 <div class="quote" id="quote5"></div>
 <button id="nextQuote">📖👉</button>
 <script>
