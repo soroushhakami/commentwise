@@ -33,21 +33,14 @@
   }
 </style>
 <script>
-  const apiKey = 'cca181eecdc8297082eb12a55d9b1d60'
-  const token = '09a32b0ef8004bd380a6c97162386d7a5f217cdbc0cd090a78c4850575a05e9f'
-  const auth = `key=${apiKey}&token=${token}`
 
-  const fetchCards = async () => fetch(`https://api.trello.com/1/boards/qKhva9eu/cards?${auth}`)
-  const fetchComments = async id => fetch(`https://api.trello.com/1/cards/${id}/actions?filter=commentCard&${auth}`)
+  const fetchCards = async () => fetch(`https://protected-waters-46433.herokuapp.com/cards`)
+  const fetchComments = async id => fetch(`https://protected-waters-46433.herokuapp.com/comments/${id}`)
 
   let cardsWithComments
   const loadCards = async () => {
-    if(cardsWithComments) {
-      return cardsWithComments
-    }
     const cardsResponse = await fetchCards()
-    const cardsJson = await cardsResponse.json()
-    cardsWithComments = cardsJson.filter(card => card.badges.comments > 0)
+    cardsWithComments = await cardsResponse.json()
   }
 
   const loadComments = async number => {
