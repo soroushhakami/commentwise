@@ -33,46 +33,36 @@
   }
 </style>
 <script>
+  const COMMENTS = 'comments'
+  const fetchComments = () => fetch('https://protected-waters-46433.herokuapp.com/comments')
+  // const fetchComments = () => fetch(`http://localhost:5000/comments`)
+  let comments
 
-  const fetchCards = async () => fetch(`https://protected-waters-46433.herokuapp.com/cards`)
-  const fetchComments = async id => fetch(`https://protected-waters-46433.herokuapp.com/comments/${id}`)
-
-  let cardsWithComments
-  const loadCards = async () => {
-    const cardsResponse = await fetchCards()
-    cardsWithComments = await cardsResponse.json()
+  const loadComments = async () => {
+    const commentsResponse = await fetchComments()
+    comments = await commentsResponse.json()
+    localStorage.setItem(COMMENTS, JSON.stringify(comments))
   }
 
-  const loadComments = async number => {
-    const randomCard = cardsWithComments[Math.floor(Math.random() * cardsWithComments.length)] 
-
-    const commentsResponse = await fetchComments(randomCard.id)
-    const comments = await commentsResponse.json()
-    const randomComment = comments[Math.floor(Math.random() * comments.length)]
-
-    const quote = document.getElementById(`quote${number}`)
-    quote.textContent = `${randomComment.data.text}`
-    const book = document.getElementById(`book${number}`)
-    book.textContent = `${randomComment.data.card.name}`
-    book.href = randomCard.shortUrl
-  }
-
-  const init = async () => {
+  window.renderComments = () => {
     window.scrollTo(0, 0)
-    await loadCards()
-    loadComments(1)
-    loadComments(2)
-    loadComments(3)
-    loadComments(4)
-    loadComments(5)
-    loadComments(6)
-    loadComments(7)
-    loadComments(8)
-    loadComments(9)
-    loadComments(10)
+    const storedComments = localStorage.getItem(COMMENTS)
+    if(storedComments) {
+      comments = JSON.parse(storedComments)
+      
+      Array(10).fill().forEach((undefined, index) => {
+        const number = index + 1
+        const randomComment = comments[Math.floor(Math.random() * comments.length)]
+        const quote = document.getElementById(`quote${number}`)
+        quote.textContent = `${randomComment.data.text}`
+        const book = document.getElementById(`book${number}`)
+        book.textContent = `${randomComment.data.card.name}`
+        book.href = `https://trello.com/c/${randomComment.data.card.shortLink}`
+      })
+    }
   }
 
-  init()
+  loadComments()
   
 </script>
 <meta charset=utf-8>
@@ -113,7 +103,8 @@
   </div>
   <button id="nextQuote">📖👉</button>
 <script>
-  document.getElementById('nextQuote').addEventListener('click', () => init())
+  document.getElementById('nextQuote').addEventListener('click', renderComments)
+  renderComments()
 </script>
 </body>
 </html>
