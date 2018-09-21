@@ -32,6 +32,16 @@
     text-decoration: none;
     float: left;
   }
+  #numberOfComments {
+    position: fixed;
+    bottom: 0;
+    width: 100%;
+    text-align: center;
+    font-family: 'Arial';
+    font-size: 12px;
+    margin-bottom: 5px;
+    color: gray;
+  }
 </style>
 <script>
   const COMMENTS = 'comments'
@@ -45,11 +55,17 @@
     localStorage.setItem(COMMENTS, JSON.stringify(comments))
   }
 
+  const renderNumberOfComments = number => {
+    const numberOfComments = document.getElementById('numberOfComments')
+    numberOfComments.textContent = `Fetched ${number} comments` 
+  }
+
   window.renderComments = () => {
     window.scrollTo(0, 0)
     const storedComments = localStorage.getItem(COMMENTS)
     if(storedComments) {
       comments = JSON.parse(storedComments)
+      renderNumberOfComments(comments.length)
       
       Array(10).fill().forEach((undefined, index) => {
         const number = index + 1
@@ -103,6 +119,7 @@
     <div class="quote" id="quote10"></div>
   </div>
   <button id="nextQuote">📖👉</button>
+  <span id="numberOfComments"></span>
 <script>
   document.getElementById('nextQuote').addEventListener('click', renderComments)
   renderComments()
