@@ -20,7 +20,6 @@
     height: 60px;
     font-size: 30px;
     border: 0;
-    margin-bottom: 20px;
   }
   .book {
     font-weight: bold;
@@ -33,13 +32,11 @@
     float: left;
   }
   #numberOfComments {
-    position: fixed;
-    bottom: 0;
-    width: 100%;
     text-align: center;
     font-family: 'Arial';
     font-size: 12px;
     margin-bottom: 5px;
+    margin-top: 5px;
     color: gray;
   }
 </style>
@@ -119,7 +116,7 @@
     <div class="quote" id="quote10"></div>
   </div>
   <button id="nextQuote">📖👉</button>
-  <span id="numberOfComments"></span>
+  <div id="numberOfComments"></div>
 <script>
   document.getElementById('nextQuote').addEventListener('click', renderComments)
   renderComments()
