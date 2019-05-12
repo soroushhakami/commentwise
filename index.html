@@ -1,88 +1,118 @@
 <!doctype html>
 <html lang=en>
+
 <head>
-<link rel="apple-touch-icon" href="https://raw.githubusercontent.com/soroushhakami/commentwise/master/book-icon.png">
-<style type="text/css">
-  * {
-  margin: 0;
-  padding: 0;
-  }
-  .container {
-    margin: 20px;
-    font-family: Georgia;
-    line-height: 1.3;
-    font-size: 20px;
-    white-space: pre-wrap;
-  }
-  button {
-    width: 100%;
-    background-color: #e8e8e8;
-    height: 60px;
-    font-size: 30px;
-    border: 0;
-  }
-  .book {
-    font-weight: bold;
-  }
-  a {
-    display: block;
-    color: black;
-    cursor: pointer;
-    text-decoration: none;
-    float: left;
-  }
-  #numberOfComments {
-    text-align: center;
-    font-family: 'Arial';
-    font-size: 12px;
-    margin-bottom: 5px;
-    margin-top: 5px;
-    color: gray;
-  }
-</style>
-<script>
-  const COMMENTS = 'comments'
-  const fetchComments = () => fetch('https://protected-waters-46433.herokuapp.com/comments')
-  // const fetchComments = () => fetch(`http://localhost:5000/comments`)
-  let comments
-
-  const loadComments = async () => {
-    const commentsResponse = await fetchComments()
-    comments = await commentsResponse.json()
-    localStorage.setItem(COMMENTS, JSON.stringify(comments))
-  }
-
-  const renderNumberOfComments = number => {
-    const numberOfComments = document.getElementById('numberOfComments')
-    numberOfComments.textContent = `Fetched ${number} comments` 
-  }
-
-  window.renderComments = () => {
-    window.scrollTo(0, 0)
-    const storedComments = localStorage.getItem(COMMENTS)
-    if(storedComments) {
-      comments = JSON.parse(storedComments)
-      renderNumberOfComments(comments.length)
-      
-      Array(10).fill().forEach((undefined, index) => {
-        const number = index + 1
-        const randomComment = comments[Math.floor(Math.random() * comments.length)]
-        const quote = document.getElementById(`quote${number}`)
-        quote.textContent = `${randomComment.data.text}`
-        const book = document.getElementById(`book${number}`)
-        book.textContent = `${randomComment.data.card.name}`
-        book.href = `https://trello.com/c/${randomComment.data.card.shortLink}`
-      })
+  <link rel="apple-touch-icon" href="https://raw.githubusercontent.com/soroushhakami/commentwise/master/book-icon.png">
+  <style type="text/css">
+    * {
+      margin: 0;
+      padding: 0;
     }
-  }
 
-  loadComments()
-  
-</script>
-<meta charset=utf-8>
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Commentwise</title>
+    .container {
+      margin: 20px;
+      font-family: Georgia;
+      line-height: 1.3;
+      font-size: 20px;
+      white-space: pre-wrap;
+    }
+
+    button {
+      width: 100%;
+      background-color: #e8e8e8;
+      height: 100px;
+      font-size: 30px;
+      border: 0;
+    }
+
+    .book {
+      font-weight: bold;
+    }
+
+    a {
+      display: block;
+      color: black;
+      cursor: pointer;
+      text-decoration: none;
+      float: left;
+    }
+
+    #numberOfComments {}
+
+    .info {
+      text-align: center;
+      font-family: 'Arial';
+      font-size: 12px;
+      margin-bottom: 5px;
+      margin-top: 5px;
+      color: gray;
+    }
+
+    #footerContainer {
+      margin-bottom: 50px;
+    }
+  </style>
+  <script>
+    const COMMENTS = 'comments'
+    const TIMESTAMP = 'timestamp'
+    const fetchComments = () => fetch('https://protected-waters-46433.herokuapp.com/comments')
+    // const fetchComments = () => fetch(`http://localhost:5000/comments`)
+    let comments
+
+    const loadComments = async () => {
+      const commentsResponse = await fetchComments()
+      comments = await commentsResponse.json()
+      localStorage.setItem(COMMENTS, JSON.stringify(comments))
+
+      const date = new Date()
+      var options = {
+        weekday: 'long',
+        month: 'short',
+        day: 'numeric',
+        hour: '2-digit',
+        minute: '2-digit'
+      };
+      localStorage.setItem(TIMESTAMP, date.toLocaleString('se-SE', options))
+    }
+
+    const renderNumberOfComments = number => {
+      const numberOfComments = document.getElementById('numberOfComments')
+      numberOfComments.textContent = `Fetched ${number} comments`
+    }
+
+    const renderDate = () => {
+      const date = document.getElementById('date')
+      date.textContent = localStorage.getItem(TIMESTAMP)
+    }
+
+    window.renderComments = () => {
+      window.scrollTo(0, 0)
+      const storedComments = localStorage.getItem(COMMENTS)
+      if (storedComments) {
+        comments = JSON.parse(storedComments)
+        renderNumberOfComments(comments.length)
+        renderDate()
+
+        Array(10).fill().forEach((undefined, index) => {
+          const number = index + 1
+          const randomComment = comments[Math.floor(Math.random() * comments.length)]
+          const quote = document.getElementById(`quote${number}`)
+          quote.textContent = `${randomComment.data.text}`
+          const book = document.getElementById(`book${number}`)
+          book.textContent = `${randomComment.data.card.name}`
+          book.href = `https://trello.com/c/${randomComment.data.card.shortLink}`
+        })
+      }
+    }
+
+    loadComments()
+
+  </script>
+  <meta charset=utf-8>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Commentwise</title>
 </head>
+
 <body>
   <div class="container">
     <a class="book" id="book1" target="_blank"></a>
@@ -115,11 +145,15 @@
     <a class="book" id="book10" target="_blank"></a>
     <div class="quote" id="quote10"></div>
   </div>
-  <button id="nextQuote">📖👉</button>
-  <div id="numberOfComments"></div>
-<script>
-  document.getElementById('nextQuote').addEventListener('click', renderComments)
-  renderComments()
-</script>
+  <div id="footerContainer">
+    <button id="nextQuote">📖👉</button>
+    <div id="numberOfComments" class="info"></div>
+    <div id="date" class="info"></div>
+  </div>
+  <script>
+    document.getElementById('nextQuote').addEventListener('click', renderComments)
+    renderComments()
+  </script>
 </body>
+
 </html>
