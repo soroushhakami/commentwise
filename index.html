@@ -72,12 +72,12 @@
         hour: '2-digit',
         minute: '2-digit'
       };
-      localStorage.setItem(TIMESTAMP, date.toLocaleString('se-SE', options))
+      localStorage.setItem(TIMESTAMP, date.toLocaleString('sv-SE', options))
     }
 
     const renderNumberOfComments = number => {
       const numberOfComments = document.getElementById('numberOfComments')
-      numberOfComments.textContent = `Fetched ${number} comments`
+      numberOfComments.textContent = `Hämtade ${number} kommentarer`
     }
 
     const renderDate = () => {
